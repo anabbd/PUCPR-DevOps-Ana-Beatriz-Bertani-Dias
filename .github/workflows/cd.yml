@@ -42,3 +42,24 @@ jobs:
           name: api-tarefas
           path: dist/api-tarefas.tar.gz
           retention-days: 7
+
+  docker:
+    name: Build da imagem Docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Build da imagem Docker
+        run: docker build -t api-tarefas:${{ github.sha }} .
+
+      - name: Testar o container
+        run: |
+          docker run -d --name api -p 5000:5000 api-tarefas:${{ github.sha }}
+          # espera o gunicorn subir e verifica o healthcheck
+          for i in $(seq 1 10); do
+            if curl -sf http://localhost:5000/health; then echo " -> OK"; break; fi
+            sleep 2
+          done
+          curl -sf http://localhost:5000/health
+          docker rm -f api
