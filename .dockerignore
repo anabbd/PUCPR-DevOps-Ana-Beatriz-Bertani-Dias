@@ -1,0 +1,22 @@
+# Nao copiar para a imagem Docker
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+
+.venv/
+venv/
+env/
+
+.git/
+.github/
+tests/
+
+*.md
+LICENSE
+setup.cfg
+dist/
+.vscode/
+.idea/
+.DS_Store
