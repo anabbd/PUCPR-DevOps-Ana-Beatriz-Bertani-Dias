@@ -63,3 +63,28 @@ jobs:
           done
           curl -sf http://localhost:5000/health
           docker rm -f api
+
+  publish:
+    name: Publicar imagem no DockerHub
+    runs-on: ubuntu-latest
+    needs: [build, docker]
+    # So publica quando ha merge/push na main (nao em cada Pull Request)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Login no DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build e push da imagem
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/api-tarefas:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/api-tarefas:${{ github.sha }}
