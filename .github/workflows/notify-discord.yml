@@ -1,0 +1,23 @@
+name: Alertas no Discord
+
+# Envia um alerta para um canal do Discord sempre que houver push/merge na main.
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  notificar:
+    name: Notificar Discord
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar alerta para o Discord
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "🚀 Novo push na main"
+          description: |
+            **Repositório:** ${{ github.repository }}
+            **Autor:** ${{ github.actor }}
+            **Commit:** ${{ github.event.head_commit.message }}
+          color: 0x2ecc71
+          username: GitHub Actions
