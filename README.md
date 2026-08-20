@@ -77,3 +77,4 @@ pytest
 - [x] **Semana 2** — repositório, branch, commits e Pull Request
 - [ ] **Semana 3** — CI/CD com GitHub Actions
 - [ ] **Semana 4** — Docker (Dockerfile e container)
+ # pequena mudanca qualquer
